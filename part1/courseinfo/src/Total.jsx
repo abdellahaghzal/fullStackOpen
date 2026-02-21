@@ -1,6 +1,6 @@
-const Total = (props) => {
+const Total = ({ total }) => {
     return (
-        <p>Number of exercises {props.total}</p>
+        <p>Number of exercises {total}</p>
     )
 }
 

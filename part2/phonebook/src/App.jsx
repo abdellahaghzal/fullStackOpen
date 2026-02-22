@@ -3,12 +3,13 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import { useEffect } from 'react'
-import axios from 'axios'
+import phonebookService from './services/phonebook'
 
 const App = () => {
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons")
+    phonebookService
+    .getPersons()
     .then(response => {
       setPersons(response.data)
     })
@@ -31,14 +32,38 @@ const App = () => {
     setFilter(e.target.value.trim().toLowerCase())
   }
 
+  const handleDelete = (p) => {
+    if (window.confirm(`Delete ${p.name}?`))
+    phonebookService
+    .delPerson(p.id)
+    .then(
+      setPersons(persons.filter((person) => person.id !== p.id))
+    )
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (!persons.some(p => p.name === newName)) {
-      setPersons(persons.concat({name: newName, number: newNumber}))
-      setNewName('')
-      setNewNumber('')
-    } else {
-      alert(`${newName} is already added to phonebook`)
+    const found = persons.find(p => p.name === newName)
+    if (!found) {
+      const newPerson = {name: newName, number: newNumber}
+      phonebookService
+      .postPerson(newPerson)
+      .then(() => {
+        setPersons(persons.concat(newPerson))
+      })
+    } else if (
+      window.confirm(
+        `${found.name} is already added to phonebook, replace the old number with a new one?`
+      )
+    ) {
+      const updatedPerson = {...found, number: newNumber}
+      phonebookService
+      .updatePerson(updatedPerson)
+      .then((response) => {
+        setPersons(persons.map((p) => 
+          p.id === found.id ? response.data : p
+        ))
+      })
     }
   }
 
@@ -58,7 +83,7 @@ const App = () => {
 
       <h3>Numbers</h3>
 
-      <Persons persons={persons} filter={filter} />
+      <Persons handleDelete={handleDelete} persons={persons} filter={filter} />
     </div>
   )
 }

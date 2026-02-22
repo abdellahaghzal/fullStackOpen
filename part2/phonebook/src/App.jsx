@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import Filter from './Filter'
-import PersonForm from './PersonForm'
-import Persons from './Persons'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import Persons from './components/Persons'
 import { useEffect } from 'react'
 import axios from 'axios'
 

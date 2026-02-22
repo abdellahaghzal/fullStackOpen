@@ -37,24 +37,6 @@ const App = () => {
     }
   }
 
-  // return (
-  //   <div>
-  //     <h2>Phonebook</h2>
-  //     <div>filter shown with<input onChange={handleChangeFilter} /></div>
-  //     <h2>add a new</h2>
-  //     <form onSubmit={handleSubmit}>
-  //       <div>name: <input onChange={handleChangeName} /></div>
-  //       <div>number: <input onChange={handleChangeNumber} /></div>
-  //       <div><button type="submit">add</button></div>
-  //     </form>
-  //     <h2>Numbers</h2>
-  //     {persons.filter(
-  //       p => p.name.toLowerCase().includes(filter)
-  //     ).map(
-  //       p => <div key={p.name}>{p.name} {p.number}</div>
-  //     )}
-  //   </div>
-  // )
   return (
     <div>
       <h2>Phonebook</h2>

@@ -4,6 +4,8 @@ import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import { useEffect } from 'react'
 import phonebookService from './services/phonebook'
+import Error from './components/Error'
+import Success from './components/Success'
 
 const App = () => {
 
@@ -19,6 +21,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [message, setMessage] = useState(null)
+  const [error, setError] = useState(null)
 
   const handleChangeName = (e) => {
     setNewName(e.target.value.trim())
@@ -36,9 +40,18 @@ const App = () => {
     if (window.confirm(`Delete ${p.name}?`))
     phonebookService
     .delPerson(p.id)
-    .then(
+    .then(() => {
       setPersons(persons.filter((person) => person.id !== p.id))
-    )
+      setMessage(`User ${p.name} has been deleted successfully`)
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    }).catch(() => {
+      setError(`User ${p.name} has been already deleted`)
+      setTimeout(() => {
+        setError(null)
+      }, 5000)
+    })
   }
 
   const handleSubmit = (e) => {
@@ -48,8 +61,12 @@ const App = () => {
       const newPerson = {name: newName, number: newNumber}
       phonebookService
       .postPerson(newPerson)
-      .then(() => {
-        setPersons(persons.concat(newPerson))
+      .then((response) => {
+        setPersons(persons.concat(response.data))
+        setMessage(`User ${newPerson.name} has been added successfully`)
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
       })
     } else if (
       window.confirm(
@@ -63,6 +80,15 @@ const App = () => {
         setPersons(persons.map((p) => 
           p.id === found.id ? response.data : p
         ))
+        setMessage(`User ${found.name} has been updated successfully`)
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
+      }).catch(() => {
+        setError(`User ${found.name} has been already deleted`)
+        setTimeout(() => {
+          setError(null)
+        }, 5000)
       })
     }
   }
@@ -70,6 +96,9 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+
+      <Success message={message} />
+      <Error error={error} />
 
       <Filter onChange={handleChangeFilter} />
 

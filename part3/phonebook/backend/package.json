@@ -1,7 +1,8 @@
 {
   "scripts": {
     "start": "node index.js",
-    "dev": "node --watch index.js"
+    "dev": "node --watch index.js",
+    "build:front": "rm -rf dist/ && cd ../frontend/ && npm i && npm run build && cp -r ./dist ../backend/dist/ && cd ../backend/"
   },
   "dependencies": {
     "dotenv": "^17.3.1",

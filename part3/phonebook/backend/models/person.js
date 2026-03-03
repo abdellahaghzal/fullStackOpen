@@ -10,8 +10,22 @@ mongoose.connect(url, { family: 4 })
     .catch((e) => {console.log("Failed to connect to db:", e.message)})
 
 const personSchema = mongoose.Schema({
-    name: String,
-    number: String,
+    name: {
+        type: String,
+        minLength: 3,
+        required: [true, "name is required!"]
+    },
+    number: {
+        type: String,
+        validate: {
+            validator: (v) => {
+                return /\d-\d/.test(v);
+            },
+            message: props => `${props.value} is not a valid number!`
+        },
+        minLength: 8,
+        required: [true, "number is required!"]
+    },
 })
 
 personSchema.set('toJSON', {

@@ -53,7 +53,7 @@ app.delete('/api/persons/:id', (req, res, next) => {
 app.post('/api/persons/', (req, res, next) => {
     let newPersonData = req.body
     if (!newPersonData) {
-        res.status(415).send({ error: 'Content-Type must be application/json' })
+        res.status(415).json({ error: 'Content-Type must be application/json' })
     } else if (!newPersonData.number) {
         res.status(400).json({ error: 'Invalid request: missing number' })
     } else if (!newPersonData.name) {
@@ -95,8 +95,7 @@ app.put('/api/persons/:id', (req, res, next) => {
 
 const errorHandler = (err, req, res, next) => {
     console.error(err.message)
-    res.status(500).json({ error: err.mesage })
-    next(err)
+    return (res.status(500).json({ error: err.message }))
 }
 
 app.use(errorHandler)

@@ -68,6 +68,12 @@ const App = () => {
           setMessage(null)
         }, 5000)
       })
+      .catch((err) => {
+        setError(err.response.data.error)
+        setTimeout(() => {
+          setError(null)
+        }, 5000)
+      })
     } else if (
       window.confirm(
         `${found.name} is already added to phonebook, replace the old number with a new one?`

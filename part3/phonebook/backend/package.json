@@ -2,12 +2,19 @@
   "scripts": {
     "start": "node index.js",
     "dev": "node --watch index.js",
-    "build:front": "rm -rf dist/ && cd ../frontend/ && npm i && npm run build && cp -r ./dist ../backend/dist/ && cd ../backend/"
+    "build:front": "rm -rf dist/ && cd ../frontend/ && npm i && npm run build && cp -r ./dist ../backend/dist/ && cd ../backend/",
+    "lint": "eslint ."
   },
   "dependencies": {
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "mongoose": "^9.2.3",
     "morgan": "^1.10.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^5.9.0",
+    "eslint": "^10.0.2",
+    "globals": "^17.4.0"
   }
 }

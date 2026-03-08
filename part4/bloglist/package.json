@@ -1,0 +1,20 @@
+{
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node index.js",
+    "dev": "cross-env NODE_ENV=development node --watch index.js",
+    "test": "npm run mongo:start && cross-env NODE_ENV=test node --test; npm run mongo:stop",
+    "test:blog": "npm run mongo:start && cross-env NODE_ENV=test node --test ./tests/blog_api.test.js; npm run mongo:stop",
+    "mongo:start": "docker run -d --name bloglist_mongodb_test -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=password mongo",
+    "mongo:stop": "docker stop bloglist_mongodb_test && docker rm bloglist_mongodb_test"
+  },
+  "dependencies": {
+    "cross-env": "^10.1.0",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "lodash": "^4.17.23",
+    "mongoose": "^9.2.4"
+  },
+  "devDependencies": {
+    "supertest": "^7.2.2"
+  }
+}

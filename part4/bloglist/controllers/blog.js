@@ -55,7 +55,7 @@ blogsRouter.patch('/:id', async (req, res) => {
     return res.status(404).end()
   }
   const updatedBlog = await Blog.findByIdAndUpdate(id, req.body)
-  res.json(updatedBlog)
+  res.json(await Blog.findById(id))
 })
 
 module.exports = blogsRouter

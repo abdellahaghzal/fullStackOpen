@@ -16,6 +16,24 @@ const testBlog = {
   url: 'http://someurl.com'
 }
 
+const rankTestBlogs = [
+  {
+    title: 'most liked blog',
+    author: 'author one',
+    url: 'http://mostliked.com'
+  },
+  {
+    title: 'middle liked blog',
+    author: 'author two',
+    url: 'http://middleliked.com'
+  },
+  {
+    title: 'least liked blog',
+    author: 'author three',
+    url: 'http://leastliked.com'
+  }
+]
+
 describe('Blog app', () => {
   beforeEach(async ({ page, request }) => {
     // empty the db here
@@ -111,6 +129,48 @@ describe('Blog app', () => {
         await page.getByRole('button', { name: 'view' }).click()
         expect(page.getByRole('button', { name: 'remove' })).not.toBeVisible()
       })
+    })
+
+    test('blogs are arranged by likes with the most liked first', async ({ page }) => {
+      const blogRows = page.locator('div[style*="border: 2px solid black"]')
+
+      const createBlog = async (blog) => {
+        const createNewBlogButton = page.getByRole('button', { name: 'create new blog' })
+
+        if (await createNewBlogButton.isVisible()) {
+          await createNewBlogButton.click()
+        }
+
+        await page.getByLabel('title:').fill(blog.title)
+        await page.getByLabel('author:').fill(blog.author)
+        await page.getByLabel('url:').fill(blog.url)
+        await page.getByRole('button', { name: 'create' }).click()
+        await page.getByRole('button', { name: 'cancel' }).click()
+      }
+
+      const likeBlog = async (blog, likeCount) => {
+        const blogRow = blogRows.filter({ hasText: `${blog.title} ${blog.author}` })
+        await blogRow.getByRole('button', { name: 'view' }).click()
+        const likeButton = blogRow.getByRole('button', { name: 'like' })
+
+        for (let i = 0; i < likeCount; i++) {
+          await likeButton.click()
+        }
+
+        await blogRow.getByRole('button', { name: 'hide' }).click()
+      }
+
+      for (const blog of rankTestBlogs) {
+        await createBlog(blog)
+      }
+
+      await likeBlog(rankTestBlogs[0], 3)
+      await likeBlog(rankTestBlogs[1], 2)
+      await likeBlog(rankTestBlogs[2], 1)
+
+      await expect(blogRows.nth(0)).toContainText(rankTestBlogs[0].title)
+      await expect(blogRows.nth(1)).toContainText(rankTestBlogs[1].title)
+      await expect(blogRows.nth(2)).toContainText(rankTestBlogs[2].title)
     })
   })
 })

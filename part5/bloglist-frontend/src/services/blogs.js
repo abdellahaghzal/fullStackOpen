@@ -1,24 +1,21 @@
 import axios from 'axios'
 const baseUrl = '/api/blog'
 
-const localStorageTokenName = 'loggedBlogAppUser'
-
 let token = null
+let config = {
+  headers: { Authorization: token }
+}
 const setToken = (newToken) => {
   token = `Bearer ${newToken}`
-  window.localStorage.setItem(
-    localStorageTokenName, JSON.stringify(user)
-  )
+  config = {
+    headers: { Authorization: token }
+  }
 }
 
-const userStr = window.localStorage.getItem(localStorageTokenName)
+const userStr = window.localStorage.getItem('loggedBlogAppUser')
 const user = JSON.parse(userStr)
 if (user) {
   setToken(user.token)
-}
-
-const config = {
-  headers: { Authorization: token }
 }
 
 const getAll = () => {

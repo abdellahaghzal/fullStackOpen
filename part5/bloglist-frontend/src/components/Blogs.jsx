@@ -1,6 +1,6 @@
 import Blog from "./Blog"
 
-const Blogs = ({ blogs, setNotification }) => {
+const Blogs = ({ blogs, setNotification, user }) => {
   return (
     <>  
       {blogs
@@ -9,6 +9,7 @@ const Blogs = ({ blogs, setNotification }) => {
           <Blog
             key={blog.id}
             blog={blog}
+            user={ user }
             setNotification={setNotification}
           />
         )}

@@ -1,7 +1,7 @@
 import { useState } from "react"
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, setNotification }) => {
+const Blog = ({ blog, setNotification, user }) => {
   const [expand, setExpand] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
   const [deleted, setDeleted] = useState(false)
@@ -26,6 +26,9 @@ const Blog = ({ blog, setNotification }) => {
         message: 'error while liking the blog',
         type: 'error'
       })
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
     }
   }
 
@@ -35,12 +38,22 @@ const Blog = ({ blog, setNotification }) => {
         await blogService.deleteBlog(blog)
         setDeleted(true)
       }
+      setNotification({
+        message: `${blog.title} by ${blog.author} was deleted successfully`,
+        type: 'success'
+      })
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
     } catch (e) {
       console.error(e.message)
       setNotification({
         message: 'error while deleting the blog',
         type: 'error'
       })
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
     }
   }
 
@@ -61,9 +74,12 @@ const Blog = ({ blog, setNotification }) => {
             </button>
           </div>
           <div>{blog.user.username}</div>
-          <button onClick={ handleDelete }>
-            remove
-          </button>
+          {user.username === blog.user.username ?
+            <button onClick={ handleDelete }>
+              remove
+            </button>
+            : null
+          }
         </div>
         : null
       }

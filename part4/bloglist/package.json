@@ -5,7 +5,8 @@
     "test": "npm run mongo:start && cross-env NODE_ENV=test node --test --test-concurrency=1; npm run mongo:stop",
     "test:blog": "npm run mongo:start && cross-env NODE_ENV=test node --test ./tests/blog_api.test.js; npm run mongo:stop",
     "mongo:start": "docker run -d --name bloglist_mongodb_test -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=password mongo",
-    "mongo:stop": "docker stop bloglist_mongodb_test && docker rm bloglist_mongodb_test"
+    "mongo:stop": "docker stop bloglist_mongodb_test && docker rm bloglist_mongodb_test",
+    "start:test": "npm run mongo:start && cross-env NODE_ENV=test node --watch index.js; npm run mongo:stop"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

@@ -50,19 +50,23 @@ const Blog = ({ blog, setNotification }) => {
       <button onClick={ toggleExpand }>
         {expand ? 'hide' : 'view'}
       </button>
-      <div style={{ display: expand ? '' : 'none'}}>
-        <div>{blog.url}</div>
-        <div>
-          likes {likes}
-          <button onClick={ handleLike }>
-            like
+
+      {expand ?
+        <div style={{ display: expand ? '' : 'none'}}>
+          <div>{blog.url}</div>
+          <div>
+            likes {likes}
+            <button onClick={ handleLike }>
+              like
+            </button>
+          </div>
+          <div>{blog.user.username}</div>
+          <button onClick={ handleDelete }>
+            remove
           </button>
         </div>
-        <div>{blog.user.username}</div>
-        <button onClick={ handleDelete }>
-          remove
-        </button>
-      </div>
+        : null
+      }
     </div>
   )
 }

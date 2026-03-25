@@ -19,14 +19,18 @@ mongoose.connect(config.MONGODB_URL, { family: 4 })
   })
 
 app.use(express.json())
-if (process.env.NODE_ENV != "test") {
+// if (config.NODE_ENV != "test") {
   app.use(morgan('tiny'))
-}
+// }
 app.use(tokenExtractor)
 
 app.use('/api/blog', userExtractor, blogRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
+if (config.NODE_ENV == "test") {
+  const testRouter = require('./controllers/testing')
+  app.use('/api/testing', testRouter)
+}
 
 app.use(errorHandler)
 

@@ -1,22 +1,11 @@
-const style = {
-  success: {
-    padding: "3px",
-    border: "4px solid green",
-    color: "green"
-  },
-  error: {
-    padding: "3px",
-    border: "4px solid red",
-    color: "red"
-  }
-}
+import { Alert } from '@mui/material'
 
 const Notification = ({ notification }) => {
   if (!notification) { return null }
   return (
-    <p style={ style[notification.type] }>
+    <Alert style={{ marginTop: 10, marginBottom: 10 }} severity={notification.type}>
       { notification.message }
-    </p>
+    </Alert>
   )
 }
 

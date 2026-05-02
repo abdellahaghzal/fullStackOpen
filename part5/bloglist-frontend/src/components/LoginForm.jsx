@@ -1,10 +1,13 @@
 import { useState } from "react"
 import loginService from "../services/login"
 import blogService from "../services/blogs"
+import { useNavigate } from "react-router-dom"
+import { TextField, Button } from '@mui/material'
 
 const LoginForm = ({ setUser, setNotification }) => {
   const [password, setPassword] = useState("")
   const [username, setUsername] = useState("")
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -18,6 +21,7 @@ const LoginForm = ({ setUser, setNotification }) => {
       blogService.setToken(user.token)
       setUsername("")
       setPassword("")
+      navigate("/")
     } catch (e) {
       console.error(e.message)
       setNotification({
@@ -32,27 +36,24 @@ const LoginForm = ({ setUser, setNotification }) => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <h1>Log in to application</h1>
       <div>
-        <label>
-          username: 
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => { setUsername(e.target.value) }}>
-          </input>
-        </label>
+        <TextField
+          label="username"
+          value={username}
+          onChange={(e) => { setUsername(e.target.value) }}
+        />
       </div>
       <div>
-        <label>
-          password: 
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => { setPassword(e.target.value) }}>
-          </input>
-        </label>
+        <TextField
+          style={{ marginTop: 10 }}
+          label="password"
+          type="password"
+          value={password}
+          onChange={(e) => { setPassword(e.target.value) }}
+        />
       </div>
-      <button type="submit">login</button>
+      <Button type="submit"  variant="contained" style={{ marginTop: 10 }}>login</Button>
     </form>
   )
 }

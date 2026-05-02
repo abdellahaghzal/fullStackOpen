@@ -1,10 +1,13 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
+import { useNavigate } from "react-router-dom"
+import { TextField, Button } from '@mui/material'
 
 const CreateBlogForm = ({ setBlogs, blogs, setNotification, user }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setURL] = useState('')
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -20,6 +23,7 @@ const CreateBlogForm = ({ setBlogs, blogs, setNotification, user }) => {
         message: `a new blog ${newBlog.title} by ${newBlog.author}`,
         type: 'success'
       })
+      navigate("/")
       setTimeout(() => {
         setNotification(null)
       }, 5000)
@@ -37,39 +41,33 @@ const CreateBlogForm = ({ setBlogs, blogs, setNotification, user }) => {
 
   return (
     <form onSubmit={ handleSubmit }>
+      <h1>create new</h1>
       <div>
-        <label>
-          title:
-          <input
-            value={title}
-            onChange={(e) => { setTitle(e.target.value) }}
-            type="text"
-            />
-        </label>
+        <TextField
+          value={title}
+          onChange={(e) => { setTitle(e.target.value) }}
+          label="title"
+        />
       </div>
       <div>
-        <label>
-          author:
-          <input
+          <TextField
+            style={{ marginTop: 10 }}
             value={author}
             onChange={(e) => { setAuthor(e.target.value) }}
-            type="text"
+            label="author"
           />
-        </label>
       </div>
       <div>
-        <label>
-          url:
-          <input
-            value={url}
-            onChange={(e) => { setURL(e.target.value) }}
-            type="text"
-          />
-        </label>
+        <TextField
+          style={{ marginTop: 10 }}
+          value={url}
+          onChange={(e) => { setURL(e.target.value) }}
+          label="url"
+        />
       </div>
-      <button type="submit">
+      <Button type="submit" variant="contained" style={{ marginTop: 10 }}>
         create
-      </button>
+      </Button>
     </form>
   )
 }

@@ -1,19 +1,14 @@
 import { useState } from "react"
 import blogService from '../services/blogs'
+import { useNavigate } from "react-router-dom"
+import { Button } from '@mui/material'
 
 const Blog = ({ blog, setNotification, user }) => {
-  const [expand, setExpand] = useState(false)
-  const [likes, setLikes] = useState(blog.likes)
-  const [deleted, setDeleted] = useState(false)
+  const navigate = useNavigate()
+  const [likes, setLikes] = useState(blog?.likes || 0)
 
-  const toggleExpand = () => { setExpand(!expand) }
-
-  const blogStyle = {
-    display: deleted ? 'none' : '',
-    border: '2px solid black',
-    marginTop: '7px',
-    marginBottom: '7px',
-    padding: '5px'
+  if (!blog) {
+    return null
   }
 
   const handleLike = async () => {
@@ -36,7 +31,7 @@ const Blog = ({ blog, setNotification, user }) => {
     try {
       if (confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
         await blogService.deleteBlog(blog)
-        setDeleted(true)
+        navigate('/')
       }
       setNotification({
         message: `${blog.title} by ${blog.author} was deleted successfully`,
@@ -58,31 +53,23 @@ const Blog = ({ blog, setNotification, user }) => {
   }
 
   return (
-    <div style={blogStyle}>
-      {blog.title} {blog.author}
-      <button onClick={ toggleExpand }>
-        {expand ? 'hide' : 'view'}
-      </button>
-
-      {expand ?
-        <div style={{ display: expand ? '' : 'none'}}>
-          <div>{blog.url}</div>
-          <div>
-            likes {likes}
-            <button onClick={ handleLike }>
-              like
-            </button>
-          </div>
-          <div>{blog.user.username}</div>
-          {user.username === blog.user.username ?
-            <button onClick={ handleDelete }>
-              remove
-            </button>
-            : null
-          }
-        </div>
-        : null
-      }
+    <div style={{padding: "10px", paddingTop: "0px", border: "solid grey 3px", marginTop: "8px", borderRadius: "10px"}}>
+      <h1>{blog.title}</h1>
+      <h3 style={{color: "grey"}}>by {blog.author}</h3>
+      <p><a href={blog.url}>{blog.url}</a></p>
+      <p style={{color: "grey"}}>Added by {blog.user.username}</p>
+      <div>
+        <span>likes {likes}</span>
+        <Button variant="contained" style={{marginLeft: 5}} onClick={ handleLike }>
+          like
+        </Button>
+        {user.username === blog.user.username ?
+          <Button variant="contained" style={{marginLeft: 5}} onClick={ handleDelete }>
+            remove
+          </Button>
+          : null
+        }
+      </div>
     </div>
   )
 }

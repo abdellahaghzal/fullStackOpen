@@ -4,7 +4,7 @@ const getAll = async () => {
   const response = await fetch(baseUrl)
 
   if (!response.ok) {
-    throw new Error('Failed to fetch notes')
+    throw new Error('Failed to fetch anecdotes')
   }
 
   const data = await response.json()
@@ -19,7 +19,7 @@ const add = async (anecdote) => {
   })
 
   if (!response.ok) {
-    throw new Error('Failed to create note')
+    throw new Error('Failed to create anecdote')
   }
 }
 
@@ -32,7 +32,7 @@ const update = async (anecdote) => {
   })
 
   if (!response.ok) {
-    throw new Error('Failed to create note')
+    throw new Error('Failed to create anecdote')
   }
 }
 
@@ -42,7 +42,7 @@ const del = async (id) => {
   })
 
   if (!response.ok) {
-    throw new Error('Failed to create note')
+    throw new Error('Failed to create anecdote')
   }
 }
 

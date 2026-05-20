@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "build": "npm run build --prefix client",
+    "start": "NODE_ENV=production npm start --prefix server",
+    "format": "npm run format --prefix server && npm run format --prefix client"
+  },
+  "dependencies": {
+    "zustand": "^5.0.13"
+  }
+}
